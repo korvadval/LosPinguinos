@@ -8,10 +8,10 @@ const PINGUINS = [
     {id: 'estriper', image_url: 'assets/images/Estriper_img.png', audio_url: 'assets/sounds/Estriper_sound.mp3'}
 ]
 const USERS_MAP = {
-    1: 'kawazaki',
-    2: 'cago',
+    545842454: 'kawazaki',
+    1268100905: 'cago',
     3: 'krico',
-    4: 'estriper'
+    5618946317: 'estriper'
 }
 
 function render(pinguin) {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const user = tg.initDataUnsafe.user;
         log(`User Info: ${JSON.stringify(user)}`)
         log(`User Id: ${user.id}`)
-        render(PINGUINS.find(pinguin => pinguin.id === USERS_MAP[user.id]))
+        render(PINGUINS.find(pinguin => pinguin.id === USERS_MAP[Number(user.id)]))
     } else {
         log(`Telegram WebApp не найден`)
     }
