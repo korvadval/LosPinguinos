@@ -22,11 +22,24 @@ function log(info) {
 }
 
 // render(PINGUINS.find(pinguin => pinguin.id === 'estriper'))
-document.addEventListener('DOMContentLoaded', () => {
-    const tg = window.Telegram?.WebApp
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Разворачиваем WebApp на весь экран
 
-    if (tg) {
-        tg.expand()
-        log(`User: ${tg.initDataUnsafe.user}`)
+        const user = tg.initDataUnsafe.user;
+        console.log("User Info:", user);
+
+        if (user) {
+            document.body.innerHTML = `
+                <h1>Привет, ${user.first_name}!</h1>
+                <p>ID: ${user.id}</p>
+                <p>Username: ${user.username || "Нет имени"}</p>
+            `;
+        } else {
+            document.body.innerHTML = "<h1>Не удалось получить информацию о пользователе</h1>";
+        }
+    } else {
+        console.error("Telegram WebApp не найден");
     }
-})
+});
