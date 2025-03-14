@@ -12,7 +12,7 @@ const PINGUINS = [
 const USERS_MAP = {
     545842454: 'kawazaki',
     1268100905: 'cago',
-    3: 'krico',
+    2655500545: 'krico',
     5618946317: 'estriper'
 }
 
