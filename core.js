@@ -5,7 +5,8 @@ const PINGUINS = [
     {id: 'kawazaki', image_url: 'assets/images/Kawazaki_img.png', audio_url: 'assets/sounds/Kawazaki_sound.mp3'},
     {id: 'cago', image_url: 'assets/images/Cago_img.png', audio_url: 'assets/sounds/Cago_sound.mp3'},
     {id: 'krico', image_url: 'assets/images/Krico_img.png', audio_url: 'assets/sounds/Krico_sound.mp3'},
-    {id: 'estriper', image_url: 'assets/images/Estriper_img.png', audio_url: 'assets/sounds/Estriper_sound.mp3'}
+    {id: 'estriper', image_url: 'assets/images/Estriper_img.png', audio_url: 'assets/sounds/Estriper_sound.mp3'},
+    {id: 'other', image_url: 'assets/images/Other_img.png', audio_url: ''}
 ]
 const USERS_MAP = {
     545842454: 'kawazaki',
@@ -27,18 +28,34 @@ function log(info) {
     log_el.innerText += `\n\n${info}`
 }
 
+let is_playing = false
+
+function onClickPinguin() {
+    if (is_playing) return
+    is_playing = true
+
+    const image_el = document.getElementById(PINGUIN_IMAGE_ID)
+    const audio_el = document.getElementById(PINGUIN_AUDIO_ID)
+
+    image_el.className = 'wobble-hor-bottom'
+    console.log(audio_el)
+    audio_el.play()
+    setTimeout(() => {
+        image_el.className = ''
+        is_playing = false
+    }, 800)
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe.user;
+        log(user.id)
         const pinguin = PINGUINS.find(pinguin => pinguin.id === USERS_MAP[Number(user.id)])
         if (pinguin) {
-            log(`User Id: ${user.id}`)
-            log(`User Id: ${pinguin.id}`)
-            log(`User Id: ${pinguin.image_url}`)
             render(pinguin)
         } else {
-            log(`USER не найден`)
+            render(PINGUINS.find(pinguin => pinguin.id === 'other'))
         }
     } else {
         log(`Telegram WebApp не найден`)
