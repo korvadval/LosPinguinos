@@ -28,16 +28,18 @@ function log(info) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    log('DOMContentLoaded')
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
-        log(`tg instance: ${JSON.stringify(tg)}`)
-        tg.expand(); // Разворачиваем WebApp на весь экран
-
         const user = tg.initDataUnsafe.user;
-        log(`User Info: ${JSON.stringify(user)}`)
-        log(`User Id: ${user.id}`)
-        render(PINGUINS.find(pinguin => pinguin.id === USERS_MAP[Number(user.id)]))
+        const pinguin = PINGUINS.find(pinguin => pinguin.id === USERS_MAP[Number(user.id)])
+        if (pinguin) {
+            log(`User Id: ${user.id}`)
+            log(`User Id: ${pinguin.id}`)
+            log(`User Id: ${pinguin.image_url}`)
+            render(pinguin)
+        } else {
+            log(`USER не найден`)
+        }
     } else {
         log(`Telegram WebApp не найден`)
     }
