@@ -1,5 +1,6 @@
 const PINGUIN_IMAGE_ID = 'pinguin_image'
 const PINGUIN_AUDIO_ID = 'pinguin_audio'
+const OTHER_INFO_ID = 'other_info'
 const LOG_INFO_ID = 'lod_info'
 const PINGUINS = [
     {id: 'kawazaki', image_url: 'assets/images/Kawazaki_img.png', audio_url: 'assets/sounds/Kawazaki_sound.mp3'},
@@ -15,12 +16,18 @@ const USERS_MAP = {
     5618946317: 'estriper'
 }
 
-function render(pinguin) {
+function renderPinguin(pinguin) {
     const image_el = document.getElementById(PINGUIN_IMAGE_ID)
     const audio_el = document.getElementById(PINGUIN_AUDIO_ID)
 
     image_el.src = pinguin.image_url
+    image_el.name = pinguin.id
     audio_el.src = pinguin.audio_url
+}
+
+function renderOtherInfo(info) {
+    const other_info_el = document.getElementById(OTHER_INFO_ID)
+    other_info_el.innerText = info
 }
 
 function log(info) {
@@ -36,26 +43,27 @@ function onClickPinguin() {
 
     const image_el = document.getElementById(PINGUIN_IMAGE_ID)
     const audio_el = document.getElementById(PINGUIN_AUDIO_ID)
-
-    image_el.className = 'wobble-hor-bottom'
-    console.log(audio_el)
-    audio_el.play()
-    setTimeout(() => {
-        image_el.className = ''
-        is_playing = false
-    }, 800)
+    if (image_el.name !== 'other') {
+        image_el.className = 'wobble-hor-bottom'
+        audio_el.play()
+        setTimeout(() => {
+            image_el.className = ''
+            is_playing = false
+        }, 800)
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe.user;
-        log(user.id)
-        const pinguin = PINGUINS.find(pinguin => pinguin.id === USERS_MAP[Number(user.id)])
+        const pinguin = PINGUINS.find(pinguin => pinguin.id === USERS_MAP[Number(user?.id)])
         if (pinguin) {
-            render(pinguin)
+            renderPinguin(pinguin)
         } else {
-            render(PINGUINS.find(pinguin => pinguin.id === 'other'))
+            renderOtherInfo('You can\'t move it move it anymore')
+            renderPinguin(PINGUINS.find(pinguin => pinguin.id === 'other'))
+            log(`UserId: ${user?.id}`)
         }
     } else {
         log(`Telegram WebApp не найден`)
