@@ -7,6 +7,12 @@ const PINGUINS = [
     {id: 'krico', image_url: 'assets/images/Krico_img.png', audio_url: 'assets/sounds/Krico_sound.mp3'},
     {id: 'estriper', image_url: 'assets/images/Estriper_img.png', audio_url: 'assets/sounds/Estriper_sound.mp3'}
 ]
+const USERS_MAP = {
+    1: 'kawazaki',
+    2: 'cago',
+    3: 'krico',
+    4: 'estriper'
+}
 
 function render(pinguin) {
     const image_el = document.getElementById(PINGUIN_IMAGE_ID)
@@ -21,7 +27,6 @@ function log(info) {
     log_el.innerText += `\n\n${info}`
 }
 
-// render(PINGUINS.find(pinguin => pinguin.id === 'estriper'))
 document.addEventListener("DOMContentLoaded", () => {
     log('DOMContentLoaded')
     if (window.Telegram && window.Telegram.WebApp) {
@@ -31,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const user = tg.initDataUnsafe.user;
         log(`User Info: ${JSON.stringify(user)}`)
+        log(`User Id: ${user.id}`)
+        render(PINGUINS.find(pinguin => pinguin.id === USERS_MAP[user.id]))
     } else {
         log(`Telegram WebApp не найден`)
     }
