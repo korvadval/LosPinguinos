@@ -26,11 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     log('DOMContentLoaded')
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
-        log(`tg instance: ${tg}`)
+        log(`tg instance: ${JSON.stringify(tg)}`)
         tg.expand(); // Разворачиваем WebApp на весь экран
 
         const user = tg.initDataUnsafe.user;
-        log(`User Info: ${user}`)
+        log(`User Info: ${JSON.stringify(user)}`)
     } else {
         log(`Telegram WebApp не найден`)
     }
